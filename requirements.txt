@@ -1,0 +1,18 @@
+# Python 3.10+
+# Core
+transformers>=4.43
+accelerate>=0.33
+vllm>=0.6.2
+huggingface_hub>=0.23
+torch>=2.3
+# Distributed training
+pytorch-lightning>=2.4
+# TorchTitan and TorchForge
+# If TorchTitan is vendored in your org, adjust imports in the trainer
+TorchTitan>=0.1.0
+# TorchForge transport, RDMA or TCP
+TorchForge>=0.2.0
+# misc
+pyyaml
+uvicorn
+fastapi
