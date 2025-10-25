@@ -11,6 +11,8 @@ Notes
 
 Quick start
 
+First, install Torchforge using the script in their repo: git@github.com:meta-pytorch/torchforge.git
+
 Terminal A, start the vLLM receiver
 ```bash
 pip install -r requirements.txt
