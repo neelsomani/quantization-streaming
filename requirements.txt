@@ -11,7 +11,7 @@ pytorch-lightning>=2.4
 # If TorchTitan is vendored in your org, adjust imports in the trainer
 TorchTitan>=0.1.0
 # TorchForge transport, RDMA or TCP
-TorchForge>=0.2.0
+torchforge==0.0.1
 # misc
 pyyaml
 uvicorn
