@@ -13,7 +13,6 @@ Quick start
 
 Terminal A, start the vLLM receiver
 ```bash
-cd streaming-e2e
 pip install -r requirements.txt
 python forge_receiver_vllm.py \
   --model Qwen/Qwen2.5-0.5B \
