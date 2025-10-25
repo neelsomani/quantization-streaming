@@ -18,7 +18,9 @@ python forge_receiver_vllm.py \
   --model Qwen/Qwen2.5-0.5B \
   --tp 1 \
   --listen tcp://0.0.0.0:55001 \
-  --max-model-len 2048
+  --max-model-len 1024 \
+  --gpu-mem-util 0.70 \
+  --dtype float16
 ```
 
 Terminal B, run the TorchTitan trainer that streams checkpoints every few steps

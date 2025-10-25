@@ -16,8 +16,15 @@ from vllm_ext.loader_stream import StreamLoader
 app = FastAPI()
 
 class Receiver:
-    def __init__(self, model: str, tp: int, listen: str, max_model_len: int):
-        self.llm = LLM(model=model, tensor_parallel_size=tp, max_model_len=max_model_len)
+    def __init__(self, model: str, tp: int, listen: str, max_model_len: int,
+                 gpu_mem_util: float, dtype: str | None):
+        self.llm = LLM(
+            model=model,
+            tensor_parallel_size=tp,
+            max_model_len=max_model_len,
+            gpu_memory_utilization=gpu_mem_util,
+            dtype=dtype or "auto",
+        )
         # Build a module map, FQNs matching state dict names for weights
         root = self.llm.llm_engine.model_executor.driver_worker.model_runner.model
         module_map = flatten_modules_for_linear_weights(root)
@@ -54,11 +61,19 @@ def main():
     ap.add_argument("--listen", type=str, default="tcp://0.0.0.0:55001")
     ap.add_argument("--max-model-len", type=int, default=2048)
     ap.add_argument("--port", type=int, default=8000)
+    ap.add_argument("--gpu-mem-util", type=float, default=0.9)
+    ap.add_argument("--dtype", type=str, default=None, choices=[None, "auto", "float16", "bfloat16", "float32"])
     args = ap.parse_args()
 
     global receiver
-    receiver = Receiver(model=args.model, tp=args.tp, listen=args.listen, max_model_len=args.max_model_len)
-
+    receiver = Receiver(
+        model=args.model,
+        tp=args.tp,
+        listen=args.listen,
+        max_model_len=args.max_model_len,
+        gpu_mem_util=args.gpu_mem_util,
+        dtype=args.dtype,
+    )
     uvicorn.run(app, host="0.0.0.0", port=args.port, log_level="info")
 
 
