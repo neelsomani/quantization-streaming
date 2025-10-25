@@ -11,6 +11,29 @@ try:
 except ImportError as e:
     raise RuntimeError("TorchForge is required. pip install TorchForge or set PYTHONPATH") from e
 
+
+class TorchForgeSender:
+    """Sender class for sending tensor data to a TorchForge endpoint."""
+    
+    def __init__(self, endpoint: str):
+        self.endpoint = endpoint
+        self._client = torchforge.Client(endpoint)
+    
+    def send(self, data: dict):
+        """Send tensor data to the TorchForge endpoint.
+        
+        Args:
+            data: Dictionary containing 'fqn', 'meta', 'tensor', and 'version_id' keys
+        """
+        self._client.send(data)
+    
+    def close(self):
+        """Close the client connection."""
+        try:
+            self._client.close()
+        except Exception:
+            pass
+
 class TorchForgeProvider(StreamingWeightProvider):
     def __init__(self, endpoint: str, device: torch.device | None = None):
         self.endpoint = endpoint

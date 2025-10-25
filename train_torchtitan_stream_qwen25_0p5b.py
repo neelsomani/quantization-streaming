@@ -16,13 +16,7 @@ except ImportError as e:
     except Exception as e2:
         raise RuntimeError("TorchTitan not found. Install or adjust imports.") from e2
 
-try:
-    import TorchForge as torchforge  # type: ignore
-except ImportError as e:
-    try:
-        import torchforge  # type: ignore
-    except Exception as e2:
-        raise RuntimeError("TorchForge not found. pip install TorchForge") from e2
+from torchforge_bridge import TorchForgeSender
 
 
 def shard_rows(O: int, tp: int, r: int):
@@ -56,7 +50,7 @@ def main():
     data = [tok(t, return_tensors="pt").to(device) for t in text]
 
     # TorchForge client
-    client = torchforge.Client(args.send)
+    client = TorchForgeSender(args.send)
 
     global_step = 0
 
